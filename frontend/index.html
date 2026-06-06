@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Explorer with B+ Tree</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar with tree view -->
+        <div id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h2>Folders</h2>
+            </div>
+            <div id="tree-view" class="tree-view">
+                <!-- Tree view will be populated dynamically -->
+                <ul id="root-tree">
+                    <li><span class="folder"><i class="fas fa-folder"></i> Loading...</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main content area -->
+        <div class="main-content">
+            <div class="header">
+                <h1>File Explorer with B+ Tree</h1>
+                <div class="actions">
+                    <button id="btn-create-folder" class="btn primary">
+                        <i class="fas fa-folder-plus"></i> New Folder
+                    </button>
+                    <button id="btn-create-file" class="btn primary">
+                        <i class="fas fa-file-alt"></i> New File
+                    </button>
+                    <button id="btn-upload-file" class="btn primary">
+                        <i class="fas fa-upload"></i> Upload File
+                    </button>
+                </div>
+            </div>
+
+            <!-- Breadcrumbs navigation -->
+            <div class="breadcrumbs" id="breadcrumbs">
+                <span class="breadcrumb active">Home</span>
+            </div>
+
+            <!-- File Explorer content -->
+            <div class="explorer-content" id="file-grid">
+                <!-- Files and folders will be displayed here -->
+                <div class="loading">Loading files...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for creating a folder -->
+    <div id="folder-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create New Folder</h2>
+            <form id="folder-form">
+                <div class="form-group">
+                    <label for="folder-path">Folder Path (e.g., Documents/Work):</label>
+                    <input type="text" id="folder-path" class="form-control" placeholder="Path to folder" required>
+                </div>
+                <button type="submit" class="btn primary">Create Folder</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for creating a file -->
+    <div id="file-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create New File</h2>
+            <form id="file-form">
+                <div class="form-group">
+                    <label for="file-folder">Folder:</label>
+                    <select id="file-folder" class="form-control">
+                        <option value="">Root</option>
+                        <!-- Other folders will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="file-name">File Name:</label>
+                    <input type="text" id="file-name" class="form-control" placeholder="e.g., notes.txt" required>
+                </div>
+                <div class="form-group">
+                    <label for="file-content">Content:</label>
+                    <textarea id="file-content" class="form-control" rows="8" placeholder="Enter file content here..."></textarea>
+                </div>
+                <button type="submit" class="btn primary">Create File</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for uploading a file -->
+     <!-- Modal for uploading a file -->
+    <div id="upload-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Upload File</h2>
+            <form id="upload-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="upload-folder">Folder:</label>
+                    <select id="upload-folder" class="form-control">
+                        <option value="">Root</option>
+                        <!-- Other folders will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="upload-file">Select File:</label>
+                    <input type="file" id="upload-file" class="form-control" required>
+                </div>
+                <button type="submit" class="btn primary">Upload</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for viewing file content -->
+    <div id="view-modal" class="modal">
+        <div class="modal-content large">
+            <span class="close">&times;</span>
+            <h2 id="view-title">File Content</h2>
+            <div class="file-content" id="view-content">
+                <!-- File content will be displayed here -->
+            </div>
+            <div class="modal-footer">
+                <button id="btn-download" class="btn secondary">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                <button id="btn-close-view" class="btn primary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for renaming a file -->
+    <div id="rename-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Rename File</h2>
+            <form id="rename-form">
+                <div class="form-group">
+                    <label for="rename-name">New Name:</label>
+                    <input type="text" id="rename-name" class="form-control" required>
+                    <input type="hidden" id="rename-path">
+                </div>
+                <button type="submit" class="btn primary">Rename</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <script src="scripts/main.js"></script>
+    <script src="scripts/fileOperations.js"></script>
+    <script src="scripts/treeView.js"></script>
+</body>
+</html>
