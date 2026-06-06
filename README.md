@@ -21,3 +21,5 @@ A File Explorer project built using:
 ```bash
 cd backend
 python app.py
+
+and then run index.html file
